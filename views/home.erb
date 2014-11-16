@@ -1,0 +1,19 @@
+<section id="add">
+  <form action="/" method="post">
+    <textarea name="band" placeholder="What's your band?&hellip;"></textarea>
+    <textarea name="zipcode" pattern="/\d{5}/" placeholder="Show's zip code&hellip;"></textarea>
+    <datetime name="venue" placeholder="Venue name&hellip;"></textarea>
+    <textarea name="description" placeholder="Tell your fans about the show&hellip;"></textarea>
+    <input type="submit" value="Post Show!">
+  </form>
+</section>
+
+<% @shows.each do |show| %>
+  <p>
+    <%=h show.band %>
+    <%=h show.zipcode %>
+    <%=h show.venue %>
+    <%=h show.description %>
+    <span><a href="/<%= show.id %>">[edit]</a></span>
+  </p>
+<% end %>
