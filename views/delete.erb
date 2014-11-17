@@ -1,0 +1,10 @@
+<% if @show %>
+  <p>Are you sure you want to delete the following show: <em>"<%=h "#{@show.band} at #{@show.venue}" %>"</em>?</p>
+  <form action="/<%= @show.id %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Yes, Delete It!">
+    <a href="/<%= @show.id %>">Cancel</a>
+  </form>
+<% else %>
+  <p>Show not found.</p>
+<% end %>

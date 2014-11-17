@@ -1,12 +1,13 @@
 require "sinatra"
 require "data_mapper"
+require "builder"
 require "sinatra/flash"
-require "sinatra/redirect_with_flash"
+require 'sinatra/redirect_with_flash'
 
 enable :sessions
 
 SITE_TITLE = "Discover Local Music"
-SITE_DESCRIPTION = "Like being a locovore for your music"
+SITE_DESCRIPTION = "Be a locovore for your music"
 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/local_music.db")
 
@@ -14,10 +15,10 @@ class Show
   include DataMapper::Resource
   property :id, Serial
   property :band, Text, :required => true
-  property :description, Text, :requred => true
+  property :description, Text, :required => true
   property :venue, Text, :required => true
-  property :zip_code, FixNum
-  property :time, DateTime
+  property :zipcode, Text, :required => true
+  #property :time, DateTime
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -28,7 +29,7 @@ helpers do
 end
 
 get "/" do
-  @shows = Show.all :order => :time
+  @shows = Show.all #:order => :zipcode
   @title = "All shows"
   if @shows.empty?
     flash[:error] = "No shows found."
@@ -41,7 +42,7 @@ post "/" do
   show.band = params[:band]
   show.description = params[:description]
   show.venue = params[:venue]
-  show.time = params[:time]
+  show.zipcode = params[:zipcode]
   if show.save
     redirect "/", flash[:notice] = "Show created successfully"
   else
@@ -51,10 +52,9 @@ end
 
 get "/:id" do
   @show = Show.get params[:id]
-  @title = "#{show.band} at #{show.venue}"
-  @description = show.description
+  @title = "#{params[:band]} at #{params[:venue]}"
   if @show
-    erb :show_page
+    erb :edit
   else
     redirect "/", flash[:error] = "Can't find that show"
   end
@@ -68,7 +68,7 @@ put "/:id" do
   show.band = params[:band]
   show.description = params[:description]
   show.venue = params[:venue]
-  show.time = params[:time]
+  show.zipcode = params[:zipcode]
   if show.save
     redirect "/", flash[:notice] = "Show updated successfully"
   else
