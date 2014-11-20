@@ -2,6 +2,12 @@ textarea {
     background-color: #66CCCC;
 }
 
+::-webkit-input-placeholder {
+ font-size: 14px;
+ color: #CC6699;
+ font-weight: bold;
+}
+
 body {
     margin: 35px auto;
     width: 640px;

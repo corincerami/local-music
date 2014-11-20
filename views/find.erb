@@ -1,0 +1,16 @@
+<section id="find">
+  <form action="/find/<%params[:user_zip]%>" method="get">
+    <textarea name="user_zip" placeholder="What's your zip code?&hellip;"></textarea>
+    <input type="submit" value="Find Shows">
+  </form>
+</section>
+
+<article>
+  <% @nearby_shows.each do |show| %>
+      <p>
+        Band: <%= show.band %><br>
+        Venue: <%= show.venue %><br>
+        Details: <%= show.description %><br>
+      </p><br>
+  <% end %>
+</article>

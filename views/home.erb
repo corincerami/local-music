@@ -1,10 +1,23 @@
+<p>
+  Post a show:
+</p>
 <section id="add">
-  <form action="/" method="post">
+  <form action="/shows" method="post">
     <textarea name="band" placeholder="What's your band called&hellip;"></textarea>
     <textarea name="zipcode" placeholder="Show's zip code&hellip;"></textarea>
     <textarea name="venue" placeholder="Venue name&hellip;"></textarea>
     <textarea name="description" placeholder="Tell your fans about the show&hellip;"></textarea>
     <input type="submit" value="Post Show!">
+  </form>
+</section>
+
+<p>
+  Find a show:
+</p>
+<section id="add">
+  <form action="/find" method="post">
+    <textarea name="user_zip" placeholder="What's your zip code?"></textarea>
+    <input type="submit" value="Find a show">
   </form>
 </section>
 

@@ -1,8 +1,16 @@
 require "sinatra"
+require "json"
 require "data_mapper"
 require "builder"
 require "sinatra/flash"
 require 'sinatra/redirect_with_flash'
+require "net/http"
+require "pry"
+
+if !ENV.has_key?("ZIP_CODE_API_KEY")
+ puts "You need to set the ZIP_CODE_API_KEY"
+ exit 1
+end
 
 enable :sessions
 
@@ -29,6 +37,10 @@ helpers do
 end
 
 get "/" do
+  redirect "/shows"
+end
+
+get "/shows" do
   @shows = Show.all #:order => :zipcode
   @title = "All shows"
   if @shows.empty?
@@ -37,7 +49,7 @@ get "/" do
   erb :home
 end
 
-post "/" do
+post "/shows" do
   show = Show.new
   show.band = params[:band]
   show.description = params[:description]
@@ -48,6 +60,28 @@ post "/" do
   else
     redirect "/", flash[:error] = "Failed to create show"
   end
+end
+
+get "/find/:user_zip" do
+  @title = "Find shows"
+  @shows = Show.all
+  @user_zip = params[:user_zip]
+  @nearby_shows = []
+  @shows.each do |show|
+    api_key = ENV["ZIP_CODE_API_KEY"]
+    zip_api_response = URI("https://www.zipcodeapi.com/rest/#{api_key}/distance.json/#{@user_zip}/#{show.zipcode}/mile")
+    response = Net::HTTP.get(zip_api_response)
+    distance = JSON.parse(response)
+    if distance["distance"] < 25
+      @nearby_shows << show
+    end
+  end
+
+  erb :find
+end
+
+post "/find" do
+  redirect "/find/#{params[:user_zip]}"
 end
 
 get "/:id" do
