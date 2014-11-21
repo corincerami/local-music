@@ -26,7 +26,7 @@ class Show
   property :description, Text, :required => true
   property :venue, Text, :required => true
   property :zipcode, Text, :required => true
-  #property :time, DateTime
+  property :date, Date#, :required => true
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -55,6 +55,7 @@ post "/shows" do
   show.description = params[:description]
   show.venue = params[:venue]
   show.zipcode = params[:zipcode]
+  show.date = params[:date]
   if show.save
     redirect "/", flash[:notice] = "Show created successfully"
   else
@@ -103,6 +104,7 @@ put "/:id" do
   show.description = params[:description]
   show.venue = params[:venue]
   show.zipcode = params[:zipcode]
+  show.date = params[:date]
   if show.save
     redirect "/", flash[:notice] = "Show updated successfully"
   else

@@ -1,11 +1,10 @@
 Local Music Tracker
 
 1. Post about shows for local bands
-    Still needs to verify zip code is an integer and valid
+  Still needs to verify zip code is valid
   Create event page
   Serves as both event notification and archive
 2. Search for shows nearby
-    Can now search for nearby shows
   Enter city/zip and find shows
   Narrow down by genre
 3. Track bands you like in your area
@@ -22,3 +21,9 @@ Local Music Tracker
   Add friends or follow users to keep in touch
   Send messages to friends/followers
   See when friends RSVP to shows or post pictures/comments
+
+Progress:
+  Shows can be posted by anyone to the front page.
+  Anyone can enter a zip code and find shows within 25 miles.
+  Bands can enter a date for the show.
+  Shows are sorted on the front page by date, most recent first.

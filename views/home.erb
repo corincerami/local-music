@@ -6,6 +6,7 @@
     <textarea name="band" placeholder="What's your band called&hellip;"></textarea>
     <textarea name="zipcode" placeholder="Show's zip code&hellip;"></textarea>
     <textarea name="venue" placeholder="Venue name&hellip;"></textarea>
+    <input id="date" type="date" name="date">
     <textarea name="description" placeholder="Tell your fans about the show&hellip;"></textarea>
     <input type="submit" value="Post Show!">
   </form>
@@ -22,10 +23,13 @@
 </section>
 
 
-<% @shows.each do |show| %>
+<% @shows.sort_by{ |show| show.date }.each do |show| %>
   <article>
     <p>Artist:
       <%=h show.band%>
+    </p>
+    <p>Date:
+      <%=h show.date%>
     </p>
     <p>Venue:
       <%=h show.venue %>
