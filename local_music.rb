@@ -1,7 +1,6 @@
 require "sinatra"
 require "json"
 require "data_mapper"
-require "builder"
 require "sinatra/flash"
 require 'sinatra/redirect_with_flash'
 require "net/http"
@@ -14,8 +13,8 @@ end
 
 enable :sessions
 
-SITE_TITLE = "Discover Local Music"
-SITE_DESCRIPTION = "Be a locovore for your music"
+SITE_TITLE = "Scene Hub"
+SITE_DESCRIPTION = "Listen Locally"
 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/local_music.db")
 
@@ -26,7 +25,7 @@ class Show
   property :description, Text, :required => true
   property :venue, Text, :required => true
   property :zipcode, Text, :required => true
-  property :date, Date#, :required => true
+  property :date, Date, :required => true
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -41,7 +40,7 @@ get "/" do
 end
 
 get "/shows" do
-  @shows = Show.all #:order => :zipcode
+  @shows = Show.all
   @title = "All shows"
   if @shows.empty?
     flash[:error] = "No shows found."

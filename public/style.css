@@ -1,17 +1,20 @@
 textarea {
-    background-color: #66CCCC;
+    /*background-color: #66CCCC;*/
+    background-color: #3A7BCC;
 }
 
 ::-webkit-input-placeholder {
  font-size: 14px;
- color: #CC6699;
+ /*color: #CC6699;*/
+ color: #95C4FF;
  font-weight: bold;
 }
 
 body {
     margin: 35px auto;
     width: 640px;
-    background-color: #33CCCC;
+    /*background-color: #0AB2A0;*/
+    background-color: #244D7F;
 }
 
 header {
@@ -22,17 +25,19 @@ header {
 header h1 {
     display: inline;
     font-size: 32px;
+    font-family: "Rock Salt", cursive;
 }
 
 header h1 a:link, header h1 a:visited {
-    color: #FF0099;
+    /*color: #FF0099;*/
+    color: #95C4FF;
     text-decoration: none;
 }
 
 header h2 {
-    font-size: 16px;
+    font-size: 20px;
     font-style: italic;
-    color: #000;
+    color: #489AFF;
 }
 
 #main {
@@ -55,7 +60,7 @@ header h2 {
     width: 100px;
     margin: -50px 0 0;
     border: 1px solid #ddd;
-    background: white;
+    background: #489AFF;
 }
 
 #edit textarea {
@@ -79,25 +84,21 @@ header h2 {
 }
 
 article {
-/*    border: 1px solid #eee;
-    border-top: none;*/
+    border: 1px solid #eee;
+    border-top: none;
     padding: 15px 10px;
 }
 
-/*article:first-of-type {
+article:first-of-type {
     border: 1px solid #eee;
-}*/
+}
 
 article:nth-child(even) {
-    background: #66CCCC;
+    background: #3A7BCC;
 }
 
 article:nth-child(odd) {
-    background: #00cccc;
-}
-
-article.complete {
-    background: #fedae3;
+    background: #4A627F;
 }
 
 article span {
@@ -106,6 +107,7 @@ article span {
 
 p {
     margin: 0 0 5px;
+    color: #95C4FF;
 }
 
 .meta {
@@ -129,7 +131,7 @@ p {
 .notice { color: green; }
 .error { color: red; }
 
-span a {
-    color: #FF0099;
+a{
+    color: #fff;
     font-size: 1.2em;
 }
