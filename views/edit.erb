@@ -5,6 +5,7 @@
     <textarea name="zipcode"><%=h @show.zipcode%></textarea>
     <textarea name="venue"><%=h @show.venue%></textarea>
     <textarea name="description"><%=h @show.description%></textarea>
+    <input id="date" type="date" name="date">
     <input type="submit" value="Submit changes">
   </form>
   <p><a href="/<%= @show.id %>/delete">Delete</a></p>

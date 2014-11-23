@@ -1,9 +1,16 @@
-<article>
-  <% @nearby_shows.each do |show| %>
-      <p>
-        Band: <%= show.band %><br>
-        Venue: <%= show.venue %><br>
-        Details: <%= show.description %><br>
-      </p><br>
-  <% end %>
-</article>
+<% @nearby_shows.each do |show| %>
+  <article>
+    <p>Artist:
+      <%=h show.band%>
+    </p>
+    <p>Date:
+      <%=h show.date%>
+    </p>
+    <p>Venue:
+      <%=h show.venue %>
+    </p>
+    <p>
+      <%=h show.description %>
+    </p>
+  </article>
+ <% end %>

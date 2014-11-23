@@ -4,12 +4,10 @@ require "data_mapper"
 require "sinatra/flash"
 require 'sinatra/redirect_with_flash'
 require "net/http"
+require "dotenv"
 require "pry"
 
-if !ENV.has_key?("ZIP_CODE_API_KEY")
- puts "You need to set the ZIP_CODE_API_KEY"
- exit 1
-end
+Dotenv.load
 
 enable :sessions
 
