@@ -23,22 +23,22 @@
 </section>
 
 
-<% @shows.sort_by{ |show| show.date }.each do |show| %>
+<% @shows.sort_by{ |show| show["show_date"] }.each do |show| %>
   <article>
     <p>Artist:
-      <%=h show.band%>
+      <%=h show["band"] %>
     </p>
     <p>Date:
-      <%=h show.date%>
+      <%=h show["show_date"] %>
     </p>
     <p>Venue:
-      <%=h show.venue %>
+      <%=h show["venue"] %>
     </p>
     <p>
-      <%=h show.description %>
+      <%=h show["description"] %>
     </p>
     <p>
-      <span><a href="/<%= show.id %>">[edit]</a></span>
+      <span><a href="/<%= show["id"] %>">[edit]</a></span>
     </p>
   </article>
 <% end %>
