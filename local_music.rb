@@ -117,8 +117,8 @@ get "/shows/:id" do
   show = show.to_a
   @show = show[0]
   binding.pry
-  @title = "#{@show['band']} at #{@show['venue']}"
   if @show
+    @title = "#{@show['band']} at #{@show['venue']}"
     erb :edit
   else
     redirect "/", flash[:error] = "Can't find that show"
