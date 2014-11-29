@@ -16,13 +16,13 @@
   Find a show:
 </p>
 <section id="add">
-  <form action="/find" method="post">
+  <form action="/shows" method="get">
     <textarea name="user_zip" placeholder="What's your zip code?"></textarea>
     <input type="submit" value="Find a show">
   </form>
 </section>
 
-
+<% @shows = @nearby_shows unless @nearby_shows.nil? or @nearby_shows.empty? %>
 <% @shows.sort_by{ |show| show["show_date"] }.each do |show| %>
   <article>
     <p>Artist:
@@ -38,7 +38,7 @@
       <%=h show["description"] %>
     </p>
     <p>
-      <span><a href="/<%= show["id"] %>">[edit]</a></span>
+      <span><a href="/shows/<%= show["id"] %>">[edit]</a></span>
     </p>
   </article>
 <% end %>

@@ -82,7 +82,19 @@ end
 get "/shows" do
   @shows = all_shows
   @title = "All shows"
-
+  @user_zip = params[:user_zip]
+  if !@user_zip.nil? && !@user_zip.empty?
+    @nearby_shows = []
+    @shows.each do |show|
+      api_key = ENV["ZIP_CODE_API_KEY"]
+      zip_api_response = URI("https://www.zipcodeapi.com/rest/#{api_key}/distance.json/#{@user_zip}/#{show['zipcode']}/mile")
+      response = Net::HTTP.get(zip_api_response)
+      distance = JSON.parse(response)
+      if distance["distance"] < 25
+        @nearby_shows << show
+      end
+    end
+  end
   erb :home
 end
 
@@ -97,37 +109,21 @@ post "/shows" do
   redirect "/shows"
 end
 
-# get "/find/:user_zip" do
-#   @title = "Find shows"
-#   @shows = Show.all
-#   @user_zip = params[:user_zip]
-#   @nearby_shows = []
-#   @shows.each do |show|
-#     api_key = ENV["ZIP_CODE_API_KEY"]
-#     zip_api_response = URI("https://www.zipcodeapi.com/rest/#{api_key}/distance.json/#{@user_zip}/#{show.zipcode}/mile")
-#     response = Net::HTTP.get(zip_api_response)
-#     distance = JSON.parse(response)
-#     if distance["distance"] < 25
-#       @nearby_shows << show
-#     end
-#   end
-
-#   erb :find
-# end
-
-# post "/find" do
-#   redirect "/find/#{params[:user_zip]}"
-# end
-
-# get "/:id" do
-#   @show = Show.get params[:id]
-#   @title = "#{params[:band]} at #{params[:venue]}"
-#   if @show
-#     erb :edit
-#   else
-#     redirect "/", flash[:error] = "Can't find that show"
-#   end
-# end
+get "/shows/:id" do
+  show_id = params[:id].to_i
+  show_query = "SELECT * FROM shows
+                WHERE shows.id = #{show_id}"
+  show = db_connection { |conn| conn.exec(show_query) }
+  show = show.to_a
+  @show = show[0]
+  binding.pry
+  @title = "#{@show['band']} at #{@show['venue']}"
+  if @show
+    erb :edit
+  else
+    redirect "/", flash[:error] = "Can't find that show"
+  end
+end
 
 # put "/:id" do
 #   show = Show.get params[:id]
