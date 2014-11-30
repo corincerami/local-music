@@ -133,27 +133,28 @@ put "/shows/:id" do
   show_date = params[:date]
   insert_query = "UPDATE shows SET band = $1, description = $2, venue = $3,
                   zipcode = $4, show_date = $5 WHERE id = #{show_id};"
-  show = db_connection { |conn| conn.exec(insert_query, [band, description, venue, zipcode, show_date]) }
+  db_connection { |conn| conn.exec(insert_query, [band, description, venue, zipcode, show_date]) }
   redirect "/shows"
 end
 
-# get "/:id/delete" do
-#   @show = Show.get params[:id]
-#   @title = "Are you sure you want to delete this show?"
-#   if @show
-#     erb :delete
-#   else
-#     redirect "/", flash[:error] = "Can't find that show"
-#   end
-# end
+get "/shows/:id/delete" do
+  show_id = params[:id].to_i
+  show_query = "SELECT shows.band, shows.venue, shows.id
+                FROM shows WHERE id = #{show_id}"
+  show = db_connection { |conn| conn.exec(show_query) }
+  show = show.to_a
+  @show = show[0]
+  @title = "Are you sure you want to delete this show?"
+  if @show
+    erb :delete
+  else
+    redirect "/", flash[:error] = "Can't find that show"
+  end
+end
 
-# delete "/:id" do
-#   show = Show.get params[:id]
-#   if show.destroy
-#     redirect "/", flash[:notice] = "Show successfully deleted"
-#   else
-#     redirect "/", flash[:error] = "Error deleting show"
-#   end
-# end
-
-
+delete "/shows/:id" do
+  show_id = params[:id].to_i
+  delete_query = "DELETE FROM shows WHERE id = #{show_id}"
+  db_connection { |conn| conn.exec(delete_query) }
+  redirect "/"
+end
