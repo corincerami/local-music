@@ -116,7 +116,6 @@ get "/shows/:id" do
   show = db_connection { |conn| conn.exec(show_query) }
   show = show.to_a
   @show = show[0]
-  binding.pry
   if @show
     @title = "#{@show['band']} at #{@show['venue']}"
     erb :edit
@@ -125,22 +124,18 @@ get "/shows/:id" do
   end
 end
 
-# put "/:id" do
-#   show = Show.get params[:id]
-#   unless show
-#     redirect "/", flash[:error] = "Can't find that show"
-#   end
-#   show.band = params[:band]
-#   show.description = params[:description]
-#   show.venue = params[:venue]
-#   show.zipcode = params[:zipcode]
-#   show.date = params[:date]
-#   if show.save
-#     redirect "/", flash[:notice] = "Show updated successfully"
-#   else
-#     redirect "/", flash[:error] = "Error updating show"
-#   end
-# end
+put "/shows/:id" do
+  show_id = params[:id].to_i
+  band = params[:band]
+  description = params[:description]
+  venue = params[:venue]
+  zipcode = params[:zipcode]
+  show_date = params[:date]
+  insert_query = "UPDATE shows SET band = $1, description = $2, venue = $3,
+                  zipcode = $4, show_date = $5 WHERE id = #{show_id};"
+  show = db_connection { |conn| conn.exec(insert_query, [band, description, venue, zipcode, show_date]) }
+  redirect "/shows"
+end
 
 # get "/:id/delete" do
 #   @show = Show.get params[:id]

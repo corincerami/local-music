@@ -1,14 +1,10 @@
-<% if @show %>
-  <form action="shows/<%= @show['id'] %>" method="post" id="edit">
-    <input type = "hidden" name="_method" value="put">
-    <textarea name="band"><%=h @show['band'] %></textarea>
-    <textarea name="zipcode"><%=h @show['zipcode'] %></textarea>
-    <textarea name="venue"><%=h @show['venue'] %></textarea>
-    <textarea name="description"><%=h @show['description'] %></textarea>
-    <input id="date" type="date" name="date" value='<%= "#{@show['show_date']}" %>'>
-    <input type="submit" value="Submit changes">
-  </form>
-  <p><a href="/<%= @show['id'] %>/delete">Delete</a></p>
-<% else %>
-  <p>Show not found.</p>
-<% end %>
+<form action='/shows/<%= "#{@show['id']}" %>' method="post" id="edit">
+  <input type = "hidden" name="_method" value="put">
+  <textarea name="band"><%=h @show['band'] %></textarea>
+  <textarea name="zipcode"><%=h @show['zipcode'] %></textarea>
+  <textarea name="venue"><%=h @show['venue'] %></textarea>
+  <textarea name="description"><%=h @show['description'] %></textarea>
+  <input id="date" type="date" name="date" value='<%= "#{@show['show_date']}" %>'>
+  <input type="submit" value="Submit changes">
+</form>
+<p><a href="/<%= @show['id'] %>/delete">Delete</a></p>
