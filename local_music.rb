@@ -28,14 +28,15 @@ def add_show(band, description, venue, zipcode, date)
   venue_id = add_venue(venue)
   add_venue(venue)
   insert_query = "INSERT INTO shows (band, band_id, description, venue, venue_id, zipcode, show_date)
-                  VALUES ('$1', '$2', '$3', '$4', '$5', '$6', CAST('#{date}' AS date));"
+                  VALUES ($1, $2, $3, $4, $5, $6, CAST('#{date}' AS date));"
   db_connection do |conn|
     conn.exec(insert_query, [band, band_id, description, venue, venue_id, zipcode])
   end
 end
 
 def all_shows
-  select_query = "SELECT * FROM shows;"
+  select_query = "SELECT * FROM shows
+                  ORDER BY shows.show_date;"
   result = db_connection do |conn|
     conn.exec(select_query)
   end
@@ -58,6 +59,10 @@ end
 
 def all_bands
   select_query = "SELECT * FROM bands;"
+  result = db_connection do |conn|
+    conn.exec(select_query)
+  end
+  result.to_a
 end
 
 def add_venue(venue_name)
@@ -163,7 +168,23 @@ delete "/shows/:id" do
   redirect "/"
 end
 
-get "/bands"
-  @bands =
+get "/bands" do
+  @bands = all_bands
+  @title = "All bands"
   erb :"bands/index"
+end
+
+get "/bands/:id" do
+  band_id = params[:id]
+  band_query = "SELECT band_name, band_description, shows.description,
+                shows.venue, shows.zipcode, shows.show_date, shows.id
+                FROM bands
+                JOIN shows ON shows.band_id = bands.id
+                WHERE bands.id = $1
+                ORDER BY shows.show_date"
+  band = db_connection do |conn|
+    conn.exec(band_query, [band_id])
+  end
+  @band = band.to_a
+  erb :"bands/show"
 end

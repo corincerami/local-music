@@ -1,0 +1,12 @@
+<h1><%= @band[0]["band_name"] %></h1>
+<h2><%= @band[0]["band_description"] %></h2>
+
+<% @band.each do |show| %>
+  <article>
+    <%= "<a href='/shows/'>" %>
+      <p><%= show["venue"] %></p>
+      <p><%= show["show_date"] %></p>
+      <p><%= show["zipcode"] %></p>
+    </a>
+  </article>
+<% end %>

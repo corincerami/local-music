@@ -1,0 +1,6 @@
+<% @bands.each do |band| %>
+  <article>
+    <p><%= "<a href='/bands/#{band["id"]}'>#{band['band_name']}</a>" %></p>
+    <p><%= band["band_description"] %></p>
+  </article>
+<% end %>

@@ -23,7 +23,7 @@
 </section>
 
 <% @shows = @nearby_shows unless @nearby_shows.nil? or @nearby_shows.empty? %>
-<% @shows.sort_by{ |show| show["show_date"] }.each do |show| %>
+<% @shows.each do |show| %>
   <article>
     <p>Artist:
       <%=h show["band"] %>
