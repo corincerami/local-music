@@ -23,8 +23,19 @@ def db_connection
   end
 end
 
+def add_show(band, description, venue, zipcode, date)
+  band_id = add_band(band)
+  venue_id = add_venue(venue)
+  add_venue(venue)
+  insert_query = "INSERT INTO shows (band, band_id, description, venue, venue_id, zipcode, show_date)
+                  VALUES ('$1', '$2', '$3', '$4', '$5', '$6', CAST('#{date}' AS date));"
+  db_connection do |conn|
+    conn.exec(insert_query, [band, band_id, description, venue, venue_id, zipcode])
+  end
+end
+
 def all_shows
-  select_query = "SELECT * FROM shows"
+  select_query = "SELECT * FROM shows;"
   result = db_connection do |conn|
     conn.exec(select_query)
   end
@@ -45,6 +56,10 @@ def add_band(band_name)
   band_id.to_a[0]["id"].to_i
 end
 
+def all_bands
+  select_query = "SELECT * FROM bands;"
+end
+
 def add_venue(venue_name)
   insert_query = "INSERT INTO venues (venue_name)
                   VALUES ('#{venue_name}');"
@@ -57,17 +72,6 @@ def add_venue(venue_name)
     venue_id = conn.exec(find_venue_id)
   end
   venue_id.to_a[0]["id"].to_i
-end
-
-def add_show(band, description, venue, zipcode, date)
-  band_id = add_band(band)
-  venue_id = add_venue(venue)
-  add_venue(venue)
-  insert_query = "INSERT INTO shows (band, band_id, description, venue, venue_id, zipcode, show_date)
-                  VALUES ('#{band}', '#{band_id}', '#{description}', '#{venue}', '#{venue_id}', '#{zipcode}', CAST('#{date}' AS date));"
-  db_connection do |conn|
-    conn.exec(insert_query)
-  end
 end
 
 helpers do
@@ -95,7 +99,7 @@ get "/shows" do
       end
     end
   end
-  erb :home
+  erb :"shows/index"
 end
 
 post "/shows" do
@@ -118,7 +122,7 @@ get "/shows/:id" do
   @show = show[0]
   if @show
     @title = "#{@show['band']} at #{@show['venue']}"
-    erb :edit
+    erb :"shows/edit"
   else
     redirect "/", flash[:error] = "Can't find that show"
   end
@@ -146,7 +150,7 @@ get "/shows/:id/delete" do
   @show = show[0]
   @title = "Are you sure you want to delete this show?"
   if @show
-    erb :delete
+    erb :"shows/delete"
   else
     redirect "/", flash[:error] = "Can't find that show"
   end
@@ -157,4 +161,9 @@ delete "/shows/:id" do
   delete_query = "DELETE FROM shows WHERE id = #{show_id}"
   db_connection { |conn| conn.exec(delete_query) }
   redirect "/"
+end
+
+get "/bands"
+  @bands =
+  erb :"bands/index"
 end
