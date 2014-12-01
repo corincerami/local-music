@@ -68,7 +68,7 @@ end
 def add_venue(venue_name)
   insert_query = "INSERT INTO venues (venue_name)
                   VALUES ('#{venue_name}');"
-  find_venue_id = "SELECT id FROM venues WHERE venue_name = '#{venue_name}'"
+  find_venue_id = "SELECT id FROM venues WHERE venue_name = '#{venue_name}';"
   venue_id = nil
   db_connection do |conn|
     if conn.exec(find_venue_id).to_a.empty?
@@ -121,7 +121,7 @@ end
 get "/shows/:id" do
   show_id = params[:id].to_i
   show_query = "SELECT * FROM shows
-                WHERE shows.id = #{show_id}"
+                WHERE shows.id = #{show_id};"
   show = db_connection { |conn| conn.exec(show_query) }
   show = show.to_a
   @show = show[0]
@@ -149,7 +149,7 @@ end
 get "/shows/:id/delete" do
   show_id = params[:id].to_i
   show_query = "SELECT shows.band, shows.venue, shows.id
-                FROM shows WHERE id = #{show_id}"
+                FROM shows WHERE id = #{show_id};"
   show = db_connection { |conn| conn.exec(show_query) }
   show = show.to_a
   @show = show[0]
@@ -163,7 +163,7 @@ end
 
 delete "/shows/:id" do
   show_id = params[:id].to_i
-  delete_query = "DELETE FROM shows WHERE id = #{show_id}"
+  delete_query = "DELETE FROM shows WHERE id = #{show_id};"
   db_connection { |conn| conn.exec(delete_query) }
   redirect "/"
 end
@@ -177,14 +177,35 @@ end
 get "/bands/:id" do
   band_id = params[:id]
   band_query = "SELECT band_name, band_description, shows.description,
-                shows.venue, shows.zipcode, shows.show_date, shows.id
+                shows.venue, shows.zipcode, shows.show_date, shows.id, shows.venue_id
                 FROM bands
                 JOIN shows ON shows.band_id = bands.id
                 WHERE bands.id = $1
-                ORDER BY shows.show_date"
+                ORDER BY shows.show_date;"
   band = db_connection do |conn|
     conn.exec(band_query, [band_id])
   end
   @band = band.to_a
   erb :"bands/show"
+end
+
+get "/venues" do
+
+  erb :"venues/index"
+end
+
+get "/venues/:id" do
+  venue_id = params[:id].to_i
+  venue_query = "SELECT venue_name, venue_zip_code, venue_description,
+                 bands.id, band_name, shows.show_date, shows.id
+                 FROM venues
+                 JOIN shows ON shows.venue_id = venues.id
+                 JOIN bands on shows.band_id = bands.id
+                 WHERE venues.id = $1
+                 ORDER BY shows.show_date;"
+  venue = db_connection do |conn|
+    conn.exec(venue_query, [venue_id])
+  end
+  @venue = venue.to_a
+  erb :"venues/show"
 end

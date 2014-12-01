@@ -26,13 +26,13 @@
 <% @shows.each do |show| %>
   <article>
     <p>Artist:
-      <%=h show["band"] %>
+      <%= "<a href='/bands/#{show["band_id"]}'>#{show['band']}</a>" %>
     </p>
     <p>Date:
       <%=h show["show_date"] %>
     </p>
     <p>Venue:
-      <%=h show["venue"] %>
+      <%= "<a href='/venues/#{show["venue_id"]}'>#{show['venue']}</a>" %>
     </p>
     <p>
       <%=h show["description"] %>

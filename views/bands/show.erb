@@ -3,10 +3,11 @@
 
 <% @band.each do |show| %>
   <article>
-    <%= "<a href='/shows/'>" %>
+    <%= "<a href='/venues/#{show['venue_id']}'>" %>
       <p><%= show["venue"] %></p>
-      <p><%= show["show_date"] %></p>
-      <p><%= show["zipcode"] %></p>
     </a>
+    <p><%= show["show_date"] %></p>
+    <p><%= show["zipcode"] %></p>
+    <%= "<a href='/shows/#{show["id"]}'>" %>[edit]</a>
   </article>
 <% end %>
