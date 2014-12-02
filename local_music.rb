@@ -26,11 +26,21 @@ end
 def add_show(band, description, venue, zipcode, date)
   band_id = add_band(band)
   venue_id = add_venue(venue)
+  # verifies that the zip code is valid
+  api_key = ENV["ZIP_CODE_API_KEY"]
+  zip_api_response = URI("https://www.zipcodeapi.com/rest/#{api_key}/info.json/#{zipcode}/degrees")
+  response = Net::HTTP.get(zip_api_response)
+  city = JSON.parse(response)["city"]
+
   add_venue(venue)
   insert_query = "INSERT INTO shows (band, band_id, description, venue, venue_id, zipcode, show_date)
                   VALUES ($1, $2, $3, $4, $5, $6, CAST('#{date}' AS date));"
-  db_connection do |conn|
-    conn.exec(insert_query, [band, band_id, description, venue, venue_id, zipcode])
+  if city.nil?
+    redirect "/", flash[:error] = "Please enter a valid zip code."
+  else
+    db_connection do |conn|
+      conn.exec(insert_query, [band, band_id, description, venue, venue_id, zipcode])
+    end
   end
 end
 
@@ -197,7 +207,7 @@ end
 get "/venues/:id" do
   venue_id = params[:id].to_i
   venue_query = "SELECT venue_name, venue_zip_code, venue_description,
-                 bands.id, band_name, shows.show_date, shows.id
+                 bands.id AS band_id, band_name, shows.show_date, shows.id AS show_id
                  FROM venues
                  JOIN shows ON shows.venue_id = venues.id
                  JOIN bands on shows.band_id = bands.id

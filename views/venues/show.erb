@@ -1,10 +1,9 @@
 <h1><%= @venue[0]["venue_name"] %></h1>
 <h1><%= @venue[0]["venue_description"] %></h1>
 
-<article>
-  <% @venue.each do |show| %>
-    <p></p>
-    <p></p>
-    <p></p>
-  <% end %>
-</article
+<% @venue.each do |show| %>
+  <article>
+    <p><%= "<a href='/bands/#{show['band_id']}'>#{show['band_name']}</a>" %></p>
+    <p><%= show["show_date"] %></p>
+  </article>
+<% end %>

@@ -1,15 +1,15 @@
 Local Music Tracker
 
 1. Post about shows for local bands
-  Still needs to verify zip code is valid
-  Create event page
-  Serves as both event notification and archive
+  ***Verify zip code is valid
+  ***Create event page
+  ***Serves as both event notification and archive
 2. Search for shows nearby
   ***Enter city/zip and find shows
   Narrow down by genre
 3. Track bands you like in your area
   Bands could create profiles
-  Find out when they're playing
+  ***Find out when they're playing
   Get news about releases/albums
 4. Post comments/photos to show pages
   Share photos taken at shows
@@ -28,3 +28,13 @@ Progress:
   Bands can enter a date for the show.
   Shows are sorted on the front page by date, most recent first.
   All data was switched to a SQL database.
+  Venues and bands now have individual pages and index pages.
+
+Still To Do:
+  Add genre category to bands
+  Allow for signup/signin (perhaps with omniauth Twitter/Facebook for now)
+  Allow bands to post news/links to their individual band page
+  Allow comments and photos to be posted to show pages/band pages
+  Create upvote/downvote or "like" system for comments and photos
+  Signed in users can add favorites to their profiles
+  Implement social features
