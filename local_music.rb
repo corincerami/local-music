@@ -89,6 +89,14 @@ def add_venue(venue_name)
   venue_id.to_a[0]["id"].to_i
 end
 
+def all_venues
+  select_query = "SELECT * FROM venues;"
+  result = db_connection do |conn|
+    conn.exec(select_query)
+  end
+  result.to_a
+end
+
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
@@ -200,7 +208,8 @@ get "/bands/:id" do
 end
 
 get "/venues" do
-
+  @venues = all_venues
+  @title = "All venues"
   erb :"venues/index"
 end
 
@@ -209,8 +218,8 @@ get "/venues/:id" do
   venue_query = "SELECT venue_name, venue_zip_code, venue_description,
                  bands.id AS band_id, band_name, shows.show_date, shows.id AS show_id
                  FROM venues
-                 JOIN shows ON shows.venue_id = venues.id
-                 JOIN bands on shows.band_id = bands.id
+                 LEFT OUTER JOIN shows ON shows.venue_id = venues.id
+                 LEFT OUTER JOIN bands on shows.band_id = bands.id
                  WHERE venues.id = $1
                  ORDER BY shows.show_date;"
   venue = db_connection do |conn|

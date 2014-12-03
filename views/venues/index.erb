@@ -1,0 +1,6 @@
+<% @venues.each do |venue| %>
+  <article>
+    <%= "<a href='/venues/#{venue["id"]}'>#{venue['venue_name']}</a>" %>
+    <%= venue["venue_description"] %>
+  </article>
+<% end %>

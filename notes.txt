@@ -29,6 +29,7 @@ Progress:
   Shows are sorted on the front page by date, most recent first.
   All data was switched to a SQL database.
   Venues and bands now have individual pages and index pages.
+  Zip codes are now verified as valid before posting shows to the database.
 
 Still To Do:
   Add genre category to bands
